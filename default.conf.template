@@ -1,0 +1,16 @@
+server {
+  listen $PORT default_server;
+
+  location /payment {                    
+    auth_request /_auth_validation;
+    proxy_pass https://payment-service-law.herokuapp.com;
+  }
+
+  location = /_auth_validation {
+    internal;
+    proxy_method                GET;
+    proxy_pass_request_body     off;
+    proxy_set_header            Content-Length "";
+    proxy_pass                  https://law-b7-auth.herokuapp.com/api/user/;
+  }
+}
