@@ -2,34 +2,61 @@ server {
   listen $PORT default_server;
 
   location /auth/ {
-    add_header Access-Control-Allow-Origin *;
     rewrite  ^/auth/(.*) /$1 break;      
     proxy_pass https://law-b7-auth.herokuapp.com/;
   }
 
   location /cart/ {
-    add_header Access-Control-Allow-Origin *;
+    if ($request_method = 'OPTIONS') {
+      add_header 'Access-Control-Allow-Origin'      * always;
+      add_header 'Access-Control-Allow-Credentials' 'true';
+      add_header 'Access-Control-Allow-Methods'     'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS';
+      add_header 'Access-Control-Allow-Headers'     'authorization, Content-Type, Accept';
+      return 204;
+    }
+
     auth_request /_auth_validation;
     rewrite  ^/cart/(.*) /$1 break;      
     proxy_pass https://cart-service-law.herokuapp.com;
   }
 
   location /restaurant/ { 
-    add_header Access-Control-Allow-Origin *;
+    if ($request_method = 'OPTIONS') {
+      add_header 'Access-Control-Allow-Origin'      * always;
+      add_header 'Access-Control-Allow-Credentials' 'true';
+      add_header 'Access-Control-Allow-Methods'     'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS';
+      add_header 'Access-Control-Allow-Headers'     'authorization, Content-Type, Accept';
+      return 204;
+    }
+
     auth_request /_auth_validation;
     rewrite  ^/restaurant/(.*) /$1 break;      
     proxy_pass https://restaurant-service-law.herokuapp.com/;
   }
 
   location /order/ {
-    add_header Access-Control-Allow-Origin *;
+    if ($request_method = 'OPTIONS') {
+      add_header 'Access-Control-Allow-Origin'      * always;
+      add_header 'Access-Control-Allow-Credentials' 'true';
+      add_header 'Access-Control-Allow-Methods'     'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS';
+      add_header 'Access-Control-Allow-Headers'     'authorization, Content-Type, Accept';
+      return 204;
+    }
+
     auth_request /_auth_validation;
     rewrite  ^/order/(.*) /$1 break;      
     proxy_pass https://order-service-law.herokuapp.com/;
   }
 
   location /payment/ {
-    add_header Access-Control-Allow-Origin *;
+    if ($request_method = 'OPTIONS') {
+      add_header 'Access-Control-Allow-Origin'      * always;
+      add_header 'Access-Control-Allow-Credentials' 'true';
+      add_header 'Access-Control-Allow-Methods'     'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS';
+      add_header 'Access-Control-Allow-Headers'     'authorization, Content-Type, Accept';
+      return 204;
+    }
+
     auth_request /_auth_validation;
     rewrite  ^/payment/(.*) /$1 break;      
     proxy_pass https://payment-service-law.herokuapp.com;
