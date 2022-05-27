@@ -1,8 +1,34 @@
 server {
   listen $PORT default_server;
 
-  location /payment {                    
+  add_header Access-Control-Allow-Origin *;
+
+  location /auth/ {
+    rewrite  ^/auth/(.*) /$1 break;      
+    proxy_pass https://law-b7-auth.herokuapp.com/;
+  }
+
+  location /cart/ {
     auth_request /_auth_validation;
+    rewrite  ^/cart/(.*) /$1 break;      
+    proxy_pass https://cart-service-law.herokuapp.com;
+  }
+
+  location /restaurant/ { 
+    auth_request /_auth_validation;
+    rewrite  ^/restaurant/(.*) /$1 break;      
+    proxy_pass https://restaurant-service-law.herokuapp.com/;
+  }
+
+  location /order/ {
+    auth_request /_auth_validation;
+    rewrite  ^/order/(.*) /$1 break;      
+    proxy_pass https://order-service-law.herokuapp.com/;
+  }
+
+  location /payment/ {
+    auth_request /_auth_validation;
+    rewrite  ^/payment/(.*) /$1 break;      
     proxy_pass https://payment-service-law.herokuapp.com;
   }
 
